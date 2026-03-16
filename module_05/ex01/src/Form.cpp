@@ -1,4 +1,5 @@
 #include "Form.hpp"
+#include "Bureaucrat.hpp"
 
 // CONSTRUCTORS AND DESTRUCTOR
 Form::Form(void) : _name("Default"), _signed(false), _sign_grade(150), _execute_grade(150) {
@@ -50,7 +51,11 @@ int	Form::getExecuteGrade(void) const {
 	return (_execute_grade);
 }
 
-
+void	Form::beSigned(const Bureaucrat& bureaucrat) {
+	if (bureaucrat.getGrade() > _sign_grade)
+		throw GradeTooLowException();
+	_signed = true;
+}
 
 // EXCEPTIONS
 const char* Form::GradeTooHighException::what() const throw() {

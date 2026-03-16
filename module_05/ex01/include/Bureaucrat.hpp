@@ -23,7 +23,7 @@ public:
 	void				incrementGrade(void);
 	void				decrementGrade(void);
 	
-	void				signForm(const Bureaucrat& bureaucrat);
+	void				signForm(Form& form) const;
 
 	class GradeTooHighException : public std::exception
 	{
