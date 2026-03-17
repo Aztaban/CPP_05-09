@@ -5,21 +5,21 @@
 # include "AForm.hpp"
 
 
-class ShruberryCreationForm : public AForm {
+class ShrubberyCreationForm : public AForm {
 
 public:
-	ShruberryCreationForm(void);
-	ShruberryCreationForm(const std::string& target);
-	ShruberryCreationForm(const ShruberryCreationForm& copy);
+	ShrubberyCreationForm(void);
+	ShrubberyCreationForm(const std::string& target);
+	ShrubberyCreationForm(const ShrubberyCreationForm& copy);
 	
-	ShruberryCreationForm&	operator=(const ShruberryCreationForm& form);
+	ShrubberyCreationForm&	operator=(const ShrubberyCreationForm& form);
 
 	void	executeForm(void) const;
 
-	~ShruberryCreationForm(void);
+	~ShrubberyCreationForm(void);
 
 private:
-	const std::string	_target;
+	std::string	_target;
 
 };
 

@@ -1,8 +1,11 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
-#include <iostream>
 
 int	main(void) {
+	std::srand(std::time(0));
 	Bureaucrat	hermes = Bureaucrat("Hermes", 1);
 	Bureaucrat	beginner = Bureaucrat("Bob", 150);
 	Form		form = Form("Driver license", 50, 50);

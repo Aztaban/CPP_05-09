@@ -19,7 +19,7 @@ public:
 	~RobotomyRequestForm(void);
 
 private:
-	const std::string	_target;
+	std::string	_target;
 
 };
 

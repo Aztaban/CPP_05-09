@@ -15,8 +15,11 @@ RM := rm -rf
 # -------- Sources --------
 SRCS := \
 	main.cpp \
+	$(SRC_DIR)/AForm.cpp \
 	$(SRC_DIR)/Bureaucrat.cpp \
-	$(SRC_DIR)/Form.cpp \
+	$(SRC_DIR)/PresidentialPardonForm.cpp \
+	$(SRC_DIR)/RobotomyRequestForm.cpp \
+	$(SRC_DIR)/ShrubberyCreationForm.cpp \
 
 OBJS := $(SRCS:%.cpp=$(OBJ_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
