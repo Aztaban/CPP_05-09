@@ -39,12 +39,14 @@ ShrubberyCreationForm&	ShrubberyCreationForm::operator=(const ShrubberyCreationF
 
 // MEMBER FUNCTIONS
 void	ShrubberyCreationForm::executeForm(void) const {
-	std::ofstream	out((_target + "_shrubbery").c_str());
+	std::string		targetName = _target + "_shrubbery";
+	std::ofstream	out(targetName.c_str());
 	if (!out)
 	{
 		std::cerr << "Failed to open shrubbery file." << std::endl;
 		return;
 	}
+	std::cout << targetName << " has been created." << std::endl;
 	out << "       _-_" << std::endl;
 	out << "    /~~   ~~\\ " << std::endl;
 	out << " /~~         ~~\\ " << std::endl;
@@ -55,3 +57,7 @@ void	ShrubberyCreationForm::executeForm(void) const {
 	out << "  _ -  | |   -_" << std::endl;
 	out << "      // \\\\" << std::endl;
 } 
+
+std::string	ShrubberyCreationForm::getTarget(void) const {
+	return (_target);
+}

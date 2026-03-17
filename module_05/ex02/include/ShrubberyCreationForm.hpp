@@ -14,7 +14,8 @@ public:
 	
 	ShrubberyCreationForm&	operator=(const ShrubberyCreationForm& form);
 
-	void	executeForm(void) const;
+	void		executeForm(void) const;
+	std::string	getTarget(void) const;
 
 	~ShrubberyCreationForm(void);
 

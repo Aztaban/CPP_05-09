@@ -15,7 +15,7 @@ public:
 
 	AForm&	operator=(const AForm& copy);
 	
-	~AForm(void);
+	virtual	~AForm(void);
 
 	const std::string&	getName(void) const;
 	bool				getSigned(void) const;
@@ -24,6 +24,7 @@ public:
 
 	void				beSigned(const Bureaucrat& bureaucrat);
 	void				execute(Bureaucrat const& executor) const;
+	virtual std::string	getTarget(void) const = 0;
 
 	class GradeTooHighException : public std::exception
 	{
@@ -44,7 +45,7 @@ public:
 	};
 
 protected:
-	virtual void	executeForm(void) const = 0;
+	virtual void		executeForm(void) const = 0;
 
 private:
 	const std::string	_name;

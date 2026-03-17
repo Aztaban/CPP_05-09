@@ -7,7 +7,7 @@ AForm::AForm(void) : _name("Default"), _signed(false), _sign_grade(150), _execut
 }
 
 AForm::AForm(const std::string& name, int signGrade, int execGrade)
-	: _name("Default"), _signed(false), _sign_grade(signGrade), _execute_grade(execGrade) 
+	: _name(name), _signed(false), _sign_grade(signGrade), _execute_grade(execGrade) 
 {
 	std::cout << "Form " << name << " constructor called sign grade: " << _sign_grade 
 			  << " ,execute grade: " << _execute_grade << std::endl;
@@ -69,11 +69,11 @@ void	AForm::execute(Bureaucrat const& executor) const {
 
 // EXCEPTIONS
 const char* AForm::GradeTooHighException::what() const throw() {
-	return ("Grade to high! (Highest 1)");
+	return ("Grade to high!");
 }
 
 const char* AForm::GradeTooLowException::what() const throw() {
-	return ("Grade to low! (Lowest 150)");
+	return ("Grade to low!");
 }
 
 const char* AForm::FormNotSignedException::what() const throw() {
@@ -82,6 +82,7 @@ const char* AForm::FormNotSignedException::what() const throw() {
 
 std::ostream& operator<<(std::ostream& os, const AForm& form) {
 	os << "Form: " << form.getName() << "\nSigned: " <<  form.getSigned() << "\nSign grade: " 
-	   << form.getSignGrade() << "\nExecution grade: " << form.getExecuteGrade(); 
+	   << form.getSignGrade() << "\nExecution grade: " << form.getExecuteGrade()
+	   << "\nTarget: " << form.getTarget(); 
 	return (os);
 }
