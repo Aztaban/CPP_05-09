@@ -1,0 +1,21 @@
+./convert 0
+./convert 42
+./convert -42
+./convert "'a'"      # if typed through shell carefully
+./convert nan
+./convert nanf
+./convert +inf
+./convert +inff
+./convert -inf
+./convert -inff
+./convert 42.0
+./convert 42.0f
+./convert 4.2
+./convert 4.2f
+./convert 127
+./convert 128
+./convert 2147483647
+./convert 2147483648
+./convert hello
+./convert 42ff
+./convert 4.2.1
