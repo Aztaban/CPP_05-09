@@ -1,7 +1,21 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <sstream>
+#include <limits>
+#include <cmath>
+#include <iomanip>
 #include "ScalarConverter.hpp"
+
+enum e_type
+{
+	INVALID = -1,
+	CHAR = 0,
+	PSEUDO = 1,
+	INT = 2,
+	FLOAT = 3,
+	DOUBLE = 4
+};
 
 static bool	isPseudoLiteral(const std::string& str) {
 	return (
@@ -94,17 +108,73 @@ static bool isDoubleLiteral(const std::string& literal)
 static int detectType(const std::string& literal)
 {
 	if (literal.empty())
-		return (-1);
+		return (INVALID);
 	if (isCharLiteral(literal))
-		return 0;
+		return (CHAR);
 	if (isPseudoLiteral(literal))
-		return (1);
+		return (PSEUDO);
 	if (isIntLiteral(literal))
-		return 2;
+		return (INT);
 	if (isFloatLiteral(literal))
-		return 3;
+		return (FLOAT);
 	if (isDoubleLiteral(literal))
-		return 4;
-	return -1;
+		return (DOUBLE);
+	return (INVALID);
+}
 
+static double	parseToDouble(const std::string& literal, int type) {
+	std::stringstream	stream;
+	long				lValue;
+	float 				fValue;
+	double				dValue;
+
+	switch (type)
+	{
+		case CHAR:
+			return (static_cast<char>(literal[1]));
+		case INT:
+			stream.str(literal);
+			stream >> lValue;
+			return (static_cast<double>(lValue));
+		case FLOAT:
+			stream.str(literal.substr(0, literal.length() - 1));
+			stream >> fValue;
+			return (static_cast<double>(fValue));
+		case DOUBLE:
+			stream.str(literal);
+			stream >> dValue;
+			return (dValue);
+		default:
+			return (0.0);
+	}
+}
+
+static void	printPseudo(const std::string& literal);
+static void	printChar(double value) {
+	std::cout << "char: ";
+	if ()
+}
+
+static void	printInt(double value);
+static void	printFloat(double value);
+static void	printDouble(double value);
+
+void	ScalarConverter::convert(const std::string& literal) {
+	int	type = detectType(literal);
+
+	if (type == INVALID)
+	{
+		std::cerr << "Invalid literal" << std::endl;
+		return ;
+	}
+	if (type == PSEUDO)
+	{
+		printPseudo(literal);
+		return;
+	}
+	double value = parseToDouble(literal, type);
+	printChar(value);
+	printInt(value);
+	printFloat(value);
+	printDouble(value);
 }
