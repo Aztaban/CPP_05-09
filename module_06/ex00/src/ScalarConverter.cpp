@@ -150,14 +150,91 @@ static double	parseToDouble(const std::string& literal, int type) {
 }
 
 static void	printPseudo(const std::string& literal);
+
 static void	printChar(double value) {
 	std::cout << "char: ";
-	if ()
+	if (
+		std::isnan(value) ||
+		std::isinf(value) ||
+		value < std::numeric_limits<char>::min() ||
+		value > std::numeric_limits<char>::max()
+	)
+	{
+		std::cout << "impossible" << std::endl;
+		return;
+	}
+	char c = static_cast<char>(value);
+	if (!std::isprint(static_cast<unsigned char>(c)))
+	{
+		std::cout << "Non displayable" << std::endl;
+		return;
+	}
+	std::cout << "'" << c << "'" << std::endl;
 }
 
-static void	printInt(double value);
-static void	printFloat(double value);
-static void	printDouble(double value);
+static void	printInt(double value) {
+	std::cout << "int: ";
+	if (
+		std::isnan(value) ||
+		std::isinf(value) ||
+		value < std::numeric_limits<int>::min() ||
+		value > std::numeric_limits<int>::max() 
+	)
+	{
+		std::cout << "impossible" << std::endl;
+		return;
+	}
+	std::cout << static_cast<int>(value) << std::endl;
+}
+
+static bool	hasNoFraction(double value) {
+	double	intPart;
+	return (std::modf(value, &intPart) == 0.0);
+}
+
+template <typename T>
+static std::string	formatNumber(T value, bool addFSuffix) {
+	std::ostringstream stream;
+
+	if (hasNoFraction(value))
+		stream << std::fixed << std::setprecision(1);
+	stream << value;
+	if (addFSuffix)
+		stream << "f";
+	return (stream.str());
+}
+
+static void	printFloat(double value) {
+	float f = static_cast<float>(value);
+	
+	std::cout << "float: ";
+	if (std::isnan(f))
+	{
+		std::cout << "nanf" << std::endl;
+		return;
+	}
+	if (std::isinf(f))
+	{
+		std::cout << (f < 0 ? "-inff" : "+inff") << std::endl;
+		return;
+	}
+	std::cout << formatNumber(f, true) << std::endl;
+}
+
+static void	printDouble(double value) {
+	std::cout << "double: ";
+	if (std::isnan(value))
+	{
+		std::cout << "nan" << std::endl;
+		return;
+	}
+	if (std::isinf(value))
+	{
+		std::cout << (value < 0 ? "-inf" : "+inf") << std::endl;
+		return;
+	}
+	std::cout << formatNumber(value, false) << std::endl;
+}
 
 void	ScalarConverter::convert(const std::string& literal) {
 	int	type = detectType(literal);
