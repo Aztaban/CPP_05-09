@@ -1,7 +1,7 @@
 ./convert 0
 ./convert 42
 ./convert -42
-./convert "'a'"      # if typed through shell carefully
+./convert "'a'"
 ./convert nan
 ./convert nanf
 ./convert +inf
@@ -19,3 +19,4 @@
 ./convert hello
 ./convert 42ff
 ./convert 4.2.1
+./convert

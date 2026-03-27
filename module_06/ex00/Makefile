@@ -1,5 +1,5 @@
 # -------- Project --------
-NAME = bureaucrat
+NAME = convert
 
 SRC_DIR := src
 OBJ_DIR := build

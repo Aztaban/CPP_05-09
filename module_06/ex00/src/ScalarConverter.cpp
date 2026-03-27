@@ -236,6 +236,21 @@ static void	printDouble(double value) {
 	std::cout << formatNumber(value, false) << std::endl;
 }
 
+static void printPseudo(const std::string& literal) {
+	std::cout << "char: impossible" << std::endl;
+	std::cout << "int: impossible" << std::endl;
+	if (literal == "nanf" || literal == "+inff" || literal == "-inff")
+	{
+		std::cout << "float: " << literal << std::endl;
+		std::cout << "double: " << literal.substr(0, literal.length() - 1);
+	}
+	else
+	{
+		std::cout << "float: " << literal << "f" << std::endl;
+		std::cout << "double: " << literal << std::endl;
+	}
+}
+
 void	ScalarConverter::convert(const std::string& literal) {
 	int	type = detectType(literal);
 
