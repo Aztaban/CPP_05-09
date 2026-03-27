@@ -1,20 +1,20 @@
 #ifndef SERIALIZER_HPP
 # define SERIALIZER_HPP
 
-# include <cstdint>
+# include <stdint.h>
 # include "Data.hpp"
 
 class Serializer {
 
 private:
-    Serializer(void);
-    Serializer(const Serializer& copy);
-    Serializer& operator=(const Serializer& copy);
-    ~Serializer(void);
+	Serializer(void);
+	Serializer(const Serializer& copy);
+	Serializer& operator=(const Serializer& copy);
+	~Serializer(void);
 
 public:
-    uintptr_t   serialize(Data* ptr);
-    Data*       deserialize(uintptr_t raw);
+	static uintptr_t	deserialize(Data* ptr);
+	static Data*		serialize(uintptr_t raw);
 
 };
 
