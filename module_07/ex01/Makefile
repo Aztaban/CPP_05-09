@@ -1,5 +1,5 @@
 # -------- Project --------
-NAME = base
+NAME = iter
 
 SRC_DIR := src
 OBJ_DIR := build
