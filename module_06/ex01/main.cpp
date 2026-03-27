@@ -1,4 +1,5 @@
 #include "Serializer.hpp"
+#include "Colors.hpp"
 
 int main(void) {
     Data data;
