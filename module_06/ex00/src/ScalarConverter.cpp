@@ -19,14 +19,14 @@ enum e_type
 
 ScalarConverter::ScalarConverter() {}
 
-ScalarConverter::ScalarConverter(const ScalarConverter& other)
+ScalarConverter::ScalarConverter(const ScalarConverter& copy)
 {
-	(void)other;
+	(void)copy;
 }
 
-ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other)
+ScalarConverter& ScalarConverter::operator=(const ScalarConverter& copy)
 {
-	(void)other;
+	(void)copy;
 	return *this;
 }
 
