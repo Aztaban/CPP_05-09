@@ -3,8 +3,8 @@
 
 # include "Base.hpp"
 
-Base*   generate(void);
-void    identify(Base* pointer);
-void    identify(Base& pointer);
+Base*	generate(void);
+void	identify(Base* pointer);
+void	identify(Base& pointer);
 
 #endif
