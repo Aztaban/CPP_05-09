@@ -7,25 +7,25 @@ template <typename T>
 class Array {
 
 private:
-    T*              _data;
-    unsigned int    _size;
+	T*				_data;
+	unsigned int	_size;
 
 public:
-    Array(void);
-    Array(unsigned int n);
-    Array(const Array& copy);
-    Array&  operator=(const Array& copy);
-    ~Array(void);
+	Array(void);
+	Array(unsigned int n);
+	Array(const Array& copy);
+	Array&  operator=(const Array& copy);
+	~Array(void);
 
-    T&          operator[](unsigned int index);
-    const T&    operator[](unsigned int index);
+	T&			operator[](unsigned int index);
+	const T&	operator[](unsigned int index) const;
 
-    unsigned int	size(void) const;
-    
-    class IndexOutOfBoundsException : public std::GradeTooLowException{
-        public:
-            virtual const char* what(void) const throw;
-    }
+	unsigned int	size(void) const;
+		
+	class IndexOutOfBoundsException : public std::exception {
+		public:
+			virtual const char* what(void) const throw();
+	};
 
 };
 
