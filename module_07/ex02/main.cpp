@@ -80,7 +80,7 @@ static void testBasicReadWrite(void)
 		std::cout << "arr[" << i << "] = " << BLUE << arr[i] << RESET << std::endl;
 }
 
-static void testCopyConstructor(void)
+static void testIndependentCopyConstructor(void)
 {
 	Array<int> original(3);
 	original[0] = 10;
@@ -158,8 +158,8 @@ int main(int, char**)
 	testDefaultConstructor();
 	std::cout << YELLOW << "\n-- Test Basic Read/Write --" << RESET << std::endl;
 	testBasicReadWrite();
-	std::cout << YELLOW << "\n-- Test Copy Constructor --" << RESET << std::endl;
-	testCopyConstructor();
+	std::cout << YELLOW << "\n-- Test Independent Copy Constructor --" << RESET << std::endl;
+	testIndependentCopyConstructor();
 	std::cout << YELLOW << "\n-- Test Assignment Operator --" << RESET << std::endl;
 	testAssignmentOperator();
 	std::cout << YELLOW << "\n-- Test Const Array --" << RESET << std::endl;
