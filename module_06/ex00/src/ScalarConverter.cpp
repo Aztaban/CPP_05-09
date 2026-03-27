@@ -257,7 +257,7 @@ static void printPseudo(const std::string& literal) {
 	if (literal == "nanf" || literal == "+inff" || literal == "-inff")
 	{
 		std::cout << "float: " << literal << std::endl;
-		std::cout << "double: " << literal.substr(0, literal.length() - 1);
+		std::cout << "double: " << literal.substr(0, literal.length() - 1) << std::endl;
 	}
 	else
 	{
