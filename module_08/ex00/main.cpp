@@ -15,8 +15,8 @@ static void testVector(void) {
     
     for (int i = 5; i <= 30; i+=5) {
         try {
-            std::vector<int>::iterator  i = easyfind(vec, 15);
-            std::cout << "vector: " << BLUE << *i << RESET << std::endl;
+            std::vector<int>::iterator  it = easyfind(vec, i);
+            std::cout << "vector: " << BLUE << *it << RESET << std::endl;
         }
         catch (std::exception& e) {
             std::cout << RED << "vector: " << e.what() << RESET << std::endl;
@@ -34,8 +34,8 @@ static void testList(void) {
 
     for (int i = 5; i <= 25; i+=5) {
         try {
-            std::vector<int>::iterator  i = easyfind(lst, 15);
-            std::cout << "list: " << BLUE << *i << RESET << std::endl;
+            std::vector<int>::iterator  it = easyfind(lst, i);
+            std::cout << "list: " << BLUE << *it << RESET << std::endl;
         }
         catch (std::exception& e) {
             std::cout << RED << "list: " << e.what() << RESET << std::endl;
@@ -53,8 +53,8 @@ static void testDeque(void) {
 
     for (int i = 5; i <= 25; i+=5) {
         try {
-            std::vector<int>::iterator  i = easyfind(dq, 15);
-            std::cout << "deque: " << BLUE << *i << RESET << std::endl;
+            std::vector<int>::iterator  it = easyfind(dq, i);
+            std::cout << "deque: " << BLUE << *it << RESET << std::endl;
         }
         catch (std::exception& e) {
             std::cout << RED << "deque: " << e.what() << RESET << std::endl;
@@ -67,8 +67,8 @@ static void testConstVector(void) {
     
     for (int i = 5; i <= 30; i+=5) {
         try {
-            std::vector<int>::const_iterator  i = easyfind(vec, 15);
-            std::cout << "const vector: " << BLUE << *i << RESET << std::endl;
+            std::vector<int>::const_iterator  it = easyfind(vec, i);
+            std::cout << "const vector: " << BLUE << *it << RESET << std::endl;
         }
         catch (std::exception& e) {
             std::cout << RED << "const vector: " << e.what() << RESET << std::endl;
@@ -85,6 +85,6 @@ int main(void) {
     testDeque();
     std::cout << YELLOW << "-- Const Vector test --" << RESET << std::endl;
     testConstVector();
-    
+
     return (0);
 }
