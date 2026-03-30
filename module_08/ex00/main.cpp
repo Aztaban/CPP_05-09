@@ -7,11 +7,11 @@
 static void testVector(void) {
     std::vector<int>    vec;
 
-    v.pushBack(5);
-    v.pushBack(10);
-    v.pushBack(15);
-    v.pushBack(20);
-    v.pushBack(25);
+    vec.push_back(10);
+    vec.push_back(5);
+    vec.push_back(15);
+    vec.push_back(20);
+    vec.push_back(25);
     
     for (int i = 5; i <= 30; i+=5) {
         try {
@@ -27,10 +27,10 @@ static void testVector(void) {
 static void testList(void) {
     std::list<int>  lst;
 
-    lst.pushBack(5);
-    lst.pushBack(10);
-    lst.pushBack(15);
-    lst.pushBack(20);
+    lst.push_back(5);
+    lst.push_back(10);
+    lst.push_back(15);
+    lst.push_back(20);
 
     for (int i = 5; i <= 25; i+=5) {
         try {
@@ -46,10 +46,10 @@ static void testList(void) {
 static void testDeque(void) {
     std::deque<int> dq;
 
-    dq.pushBack(5);
-    dq.pushBack(10);
-    dq.pushBack(15);
-    dq.pushBack(20);
+    dq.push_back(5);
+    dq.push_back(10);
+    dq.push_back(15);
+    dq.push_back(20);
 
     for (int i = 5; i <= 25; i+=5) {
         try {
