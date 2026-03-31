@@ -15,7 +15,7 @@ RM := rm -rf
 # -------- Sources --------
 SRCS := \
 	main.cpp \
-	(SRC_DIR)/Span.cpp \
+	$(SRC_DIR)/Span.cpp \
 
 OBJS := $(SRCS:%.cpp=$(OBJ_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
@@ -35,7 +35,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@printf "$(BLU)Link$(RESET)   $(NAME)... "
 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME) && \
-		printf "%-22s[$(GRN)OK$(RESET)]\n" || \
+		printf "%-24s[$(GRN)OK$(RESET)]\n" || \
 		(printf "[$(RED)FAIL$(RESET)]\n"; exit 1)
 
 $(OBJ_DIR)/%.o: %.cpp

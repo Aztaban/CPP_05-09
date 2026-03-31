@@ -1,41 +1,43 @@
 #ifndef SPAN_HPP
 # define SPAN_HPP
 
-# include <stdexcpet>
+# include <stdexcept>
+# include <vector>
 
 class Span {
 
 private:
-    unsigned int	    _maxSize;
-    std::vector<int>    _numbers;
+	unsigned int		_maxSize;
+	std::vector<int>	_numbers;
 
 public:
-    Span(void);
-    Span(unsigned int N);
-    Span(const Span& copy);
+	Span(void);
+	Span(unsigned int N);
+	Span(const Span& copy);
 
-    Span& operator=(const Span& copy);
+	Span& operator=(const Span& copy);
 
-    ~Span(void);
+	~Span(void);
 
-    void    addNumber(int number);
-    int		shortestSpan(void) const;
-    int		longestSpan(void) const;
+	void	addNumber(int number);
+	int		shortestSpan(void) const;
+	int		longestSpan(void) const;
 
-    template <typename InputIterator>
-    void    addRange(InputIterator first, InputIterator last);
+	template <typename InputIterator>
+	void	addRange(InputIterator first, InputIterator last);
 
-    class   FullSpanException : public std::exception {
-        public:
-            virtual const char* what() const throw();
-    }
+	class	FullSpanException : public std::exception {
+		public:
+			virtual const char* what() const throw();
+	};
 
-    class   NoSpanFoundException : public std::exception {
-        public:
-            virtual const char* what() const throw();
-    }
+	class	NoSpanFoundException : public std::exception {
+		public:
+			virtual const char* what() const throw();
+	};
 
-    #include "Span.tpp"
 };
+
+#include "Span.tpp"
 
 #endif
