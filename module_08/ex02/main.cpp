@@ -50,15 +50,61 @@ static void SubjectTest(void) {
 	std::stack<int> s(mstack);
 }
 
+static void	CopyTest(void) {
+	MutantStack<int>	og;
+
+	og.push(858);
+	og.push(15);
+	og.push(42);
+
+	MutantStack<int>	copy(og);
+
+	std::cout << "Original top: " << BLUE << og.top() << RESET << std::endl;
+	std::cout << "Copy top: " << BLUE << copy.top() << RESET << std::endl;
+}
+
+static void	AssignmentTest(void) {
+	MutantStack<int>	first;
+	MutantStack<int>	second;
+
+	first.push(1);
+	first.push(858);
+	first.push(42);
+
+	second.push(-1);
+	second.push(-42);
+	second.push(-858);
+
+	second = first;
+	for (MutantStack<int>::iterator it = first.begin(); it != first.end(); it++)
+		std::cout << "Original value: " << BLUE << *it << RESET << std::endl;
+	for (MutantStack<int>::iterator it = second.begin(); it != second.end(); it++)
+		std::cout << "Copy value: " << BLUE << *it << RESET << std::endl;
+}
+
+static void ConstTest(void)
+{
+	MutantStack<int> tmp;
+	tmp.push(42);
+	tmp.push(84);
+
+	const MutantStack<int> copy(tmp);
+
+	for (MutantStack<int>::const_iterator it = copy.begin(); it != copy.end(); it++)
+		std::cout << "Value: " << BLUE << *it << RESET << std::endl;
+}
+
+
 int main()
 {
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
+	std::cout << YELLOW << "-- MutantStack subject test --" << RESET << std::endl;
 	SubjectTest();
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
+	std::cout << YELLOW << "-- Copy constructor test --" << RESET << std::endl;
+	CopyTest();
+	std::cout << YELLOW << "-- Copy assignment test --" << RESET << std::endl;
+	AssignmentTest();
+	std::cout << YELLOW << "-- Const iteration test --" << RESET << std::endl;
+	ConstTest();
+
 	return 0;
 }
