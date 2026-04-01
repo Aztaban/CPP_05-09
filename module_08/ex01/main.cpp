@@ -115,21 +115,21 @@ static void	BigSpanTest(void) {
 
 int main()
 {
-	std::cout << YELLOW << "-- Subject test --" << std::endl;
+	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
 	subjectTest();
-	std::cout << YELLOW << "-- Empty span test --" << std::endl;
+	std::cout << YELLOW << "-- Empty span test --" << RESET << std::endl;
 	emptySpanTest();
-	std::cout << YELLOW << "-- One number test --" << std::endl;
+	std::cout << YELLOW << "-- One number test --" << RESET << std::endl;
 	oneNumberTest();
-	std::cout << YELLOW << "-- Full span test --" << std::endl;
+	std::cout << YELLOW << "-- Full span test --" << RESET << std::endl;
 	fullSpanTest();
-	std::cout << YELLOW << "-- Duplicates test --" << std::endl;
+	std::cout << YELLOW << "-- Duplicates test --" << RESET << std::endl;
 	duplicatesTest();
-	std::cout << YELLOW << "-- Negative numbers test --" << std::endl;
+	std::cout << YELLOW << "-- Negative numbers test --" << RESET << std::endl;
 	negativeNumbersTest();
-	std::cout << YELLOW << "-- Subject test --" << std::endl;
+	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
 	addRangeTest();
-	std::cout << YELLOW << "-- 100 001 numbers test --" << std::endl;
+	std::cout << YELLOW << "-- 100 001 numbers test --" << RESET << std::endl;
 	BigSpanTest();
 
 	return (0);
