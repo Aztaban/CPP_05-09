@@ -2,7 +2,7 @@
 
 while IFS= read -r line
 do
-	echo "\033[33m>>> $line\033[0m"
+	printf "\e[33m>>> $line \e[0m\n"
 	$line
 	echo
 done < test_cases.txt

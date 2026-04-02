@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iomanip>
 #include "ScalarConverter.hpp"
+#include "Colors.hpp"
 
 enum e_type
 {
@@ -71,10 +72,10 @@ static bool isIntLiteral(const std::string& literal)
 
 static bool isDecimalLiteral(const std::string& literal, bool requireF)
 {
-	size_t i = 0;
-	size_t len = literal.length();
-	bool hasDigitBeforeDot = false;
-	bool hasDigitAfterDot = false;
+	size_t	i = 0;
+	size_t	len = literal.length();
+	bool	hasDigitBeforeDot = false;
+	bool	hasDigitAfterDot = false;
 
 	if (literal.empty())
 		return false;
@@ -112,12 +113,12 @@ static bool isDecimalLiteral(const std::string& literal, bool requireF)
 
 static bool isFloatLiteral(const std::string& literal)
 {
-	return isDecimalLiteral(literal, true);
+	return (isDecimalLiteral(literal, true));
 }
 
 static bool isDoubleLiteral(const std::string& literal)
 {
-	return isDecimalLiteral(literal, false);
+	return (isDecimalLiteral(literal, false));
 }
 
 static int detectType(const std::string& literal)
@@ -167,7 +168,7 @@ static double	parseToDouble(const std::string& literal, int type) {
 static void	printPseudo(const std::string& literal);
 
 static void	printChar(double value) {
-	std::cout << "char: ";
+	std::cout << std::left << std::setw(8) << "char: ";
 	if (
 		std::isnan(value) ||
 		std::isinf(value) ||
@@ -175,20 +176,20 @@ static void	printChar(double value) {
 		value > std::numeric_limits<char>::max()
 	)
 	{
-		std::cout << "impossible" << std::endl;
+		std::cout << RED << "impossible" << RESET << std::endl;
 		return;
 	}
 	char c = static_cast<char>(value);
 	if (!std::isprint(static_cast<unsigned char>(c)))
 	{
-		std::cout << "Non displayable" << std::endl;
+		std::cout << RED << "Non displayable" << RESET << std::endl;
 		return;
 	}
-	std::cout << "'" << c << "'" << std::endl;
+	std::cout << BLUE << "'" << c << "'" << RESET << std::endl;
 }
 
 static void	printInt(double value) {
-	std::cout << "int: ";
+	std::cout << std::left << std::setw(8) << "int: ";
 	if (
 		std::isnan(value) ||
 		std::isinf(value) ||
@@ -196,10 +197,10 @@ static void	printInt(double value) {
 		value > std::numeric_limits<int>::max() 
 	)
 	{
-		std::cout << "impossible" << std::endl;
+		std::cout << RED << "impossible" << RESET << std::endl;
 		return;
 	}
-	std::cout << static_cast<int>(value) << std::endl;
+	std::cout << BLUE << static_cast<int>(value) << RESET << std::endl;
 }
 
 static bool	hasNoFraction(double value) {
@@ -222,47 +223,48 @@ static std::string	formatNumber(T value, bool addFSuffix) {
 static void	printFloat(double value) {
 	float f = static_cast<float>(value);
 	
-	std::cout << "float: ";
+	std::cout << std::left << std::setw(8) << "float: ";
 	if (std::isnan(f))
 	{
-		std::cout << "nanf" << std::endl;
+		std::cout << BLUE << "nanf" << RESET << std::endl;
 		return;
 	}
 	if (std::isinf(f))
 	{
-		std::cout << (f < 0 ? "-inff" : "+inff") << std::endl;
+		std::cout << BLUE << (f < 0 ? "-inff" : "+inff") << RESET << std::endl;
 		return;
 	}
-	std::cout << formatNumber(f, true) << std::endl;
+	std::cout << BLUE << formatNumber(f, true) << RESET << std::endl;
 }
 
 static void	printDouble(double value) {
-	std::cout << "double: ";
+	std::cout << std::left << std::setw(8) << "double: ";
 	if (std::isnan(value))
 	{
-		std::cout << "nan" << std::endl;
+		std::cout << BLUE << "nan" << RESET << std::endl;
 		return;
 	}
 	if (std::isinf(value))
 	{
-		std::cout << (value < 0 ? "-inf" : "+inf") << std::endl;
+		std::cout << BLUE << (value < 0 ? "-inf" : "+inf") << RESET << std::endl;
 		return;
 	}
-	std::cout << formatNumber(value, false) << std::endl;
+	std::cout << BLUE << formatNumber(value, false) << RESET << std::endl;
 }
 
 static void printPseudo(const std::string& literal) {
-	std::cout << "char: impossible" << std::endl;
-	std::cout << "int: impossible" << std::endl;
+	std::cout << std::left << std::setw(8) << "char: " << RED << "impossible" << RESET << std::endl;
+	std::cout << std::left << std::setw(8) << "int: " << RED << "impossible" << RESET << std::endl;
 	if (literal == "nanf" || literal == "+inff" || literal == "-inff")
 	{
-		std::cout << "float: " << literal << std::endl;
-		std::cout << "double: " << literal.substr(0, literal.length() - 1) << std::endl;
+		std::cout << std::left << std::setw(8) << "float: " << BLUE << literal << RESET << std::endl;
+		std::cout << std::left << std::setw(8) << "double: " << BLUE 
+				  << literal.substr(0, literal.length() - 1) << RESET << std::endl;
 	}
 	else
 	{
-		std::cout << "float: " << literal << "f" << std::endl;
-		std::cout << "double: " << literal << std::endl;
+		std::cout << std::left << std::setw(8) << "float: " << BLUE << literal << "f" << RESET << std::endl;
+		std::cout << std::left << std::setw(8) << "double: " << BLUE << literal << RESET << std::endl;
 	}
 }
 
@@ -271,7 +273,7 @@ void	ScalarConverter::convert(const std::string& literal) {
 
 	if (type == INVALID)
 	{
-		std::cerr << "Invalid literal" << std::endl;
+		std::cerr << RED << "Invalid literal" << RESET << std::endl;
 		return ;
 	}
 	if (type == PSEUDO)
