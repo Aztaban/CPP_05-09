@@ -5,6 +5,7 @@
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
+#include "Colors.hpp"
 
 Base*	generate(void) {
 	int n = std::rand() % 3;
@@ -19,29 +20,29 @@ Base*	generate(void) {
 
 void	identify(Base* pointer) {
 	if (dynamic_cast<A*>(pointer))
-		std::cout << "A" << std::endl;
+		std::cout << BLUE << "A" << RESET << std::endl;
 	else if (dynamic_cast<B*>(pointer))
-		std::cout << "B" << std::endl;
+		std::cout << BLUE << "B" << RESET << std::endl;
 	else if (dynamic_cast<C*>(pointer))
-		std::cout << "C" << std::endl;
+		std::cout << BLUE << "C" << RESET << std::endl;
 }
 
 void	identify(Base& pointer) {
 	try {
 		(void)dynamic_cast<A&>(pointer);
-		std::cout << "A" << std::endl;
+		std::cout << BLUE << "A" << RESET << std::endl;
 	} 
 	catch (std::exception& e) {}
 
 	try {
 		(void)dynamic_cast<B&>(pointer);
-		std::cout << "B" << std::endl;
+		std::cout << BLUE << "B" << RESET << std::endl;
 	}
 	catch (std::exception& e) {}
 
 	try {
 		(void)dynamic_cast<C&>(pointer);
-		std::cout << "C" << std::endl;
+		std::cout << BLUE << "C" << RESET << std::endl;
 	}
 	catch (std::exception& e) {}
 }
