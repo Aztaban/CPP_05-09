@@ -26,10 +26,12 @@ void	Span::addNumber(int number) {
 int	Span::shortestSpan(void) const {
 	if (_numbers.size() < 2)
 		throw NoSpanFoundException();
+
 	std::vector<int> sorted(_numbers);
 	std::sort(sorted.begin(), sorted.end());
+
 	int shortest = sorted[1] - sorted[0];
-	for (std::size_t i = 1; i < sorted.size() - 1; i++) {
+	for (std::size_t i = 2; i < sorted.size(); i++) {
 		int current = sorted[i] - sorted[i - 1];
 		if (current < shortest)
 			shortest = current;

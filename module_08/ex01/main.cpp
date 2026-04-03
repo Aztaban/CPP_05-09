@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "Span.hpp"
 #include "Colors.hpp"
 
@@ -9,25 +10,25 @@ static void	subjectTest(void) {
 	sp.addNumber(17);
 	sp.addNumber(9);
 	sp.addNumber(11);
-	std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
-	std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 }
 
 static void	emptySpanTest(void) {
 	Span	sp(5);
 
 	try {
-		std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+		std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
 	}
 	catch (std::exception& e) {
-		std::cout << RED << "Shortest span exception: " << e.what() << RESET << std::endl;
+		std::cout << RED << e.what() << RESET << std::endl;
 	}
 
 	try {
-		std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+		std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 	}
 	catch (std::exception& e) {
-		std::cout << RED << "Longest span exception: " << e.what() << RESET << std::endl;
+		std::cout << RED << e.what() << RESET << std::endl;
 	}
 }
 
@@ -37,17 +38,17 @@ static void	oneNumberTest(void) {
 	sp.addNumber(42);
 
 	try {
-		std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+		std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
 	}
 	catch (std::exception& e) {
-		std::cout << RED << "Shortest span exception: " << e.what() << RESET << std::endl;
+		std::cout << RED << e.what() << RESET << std::endl;
 	}
 
 	try {
-		std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+		std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 	}
 	catch (std::exception& e) {
-		std::cout << RED << "Longest span exception: " << e.what() << RESET << std::endl;
+		std::cout << RED << e.what() << RESET << std::endl;
 	}
 }
 
@@ -59,7 +60,7 @@ static void	fullSpanTest(void) {
 			sp.addNumber(i);
 	}
 	catch (std::exception& e) {
-		std::cout << RED << "addNumber exception: " << e.what() << RESET << std::endl;
+		std::cout << "addNumber exception: " << RED << e.what() << RESET << std::endl;
 	}
 }
 
@@ -70,8 +71,8 @@ static void	duplicatesTest(void) {
 	sp.addNumber(42);
 	sp.addNumber(5);
 
-	std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
-	std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 }
 
 static void	negativeNumbersTest(void) {
@@ -83,8 +84,8 @@ static void	negativeNumbersTest(void) {
 	sp.addNumber(-420);
 	sp.addNumber(4242);
 
-	std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
-	std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 }
 
 static void	addRangeTest(void) {
@@ -97,8 +98,8 @@ static void	addRangeTest(void) {
 	Span sp(4);
 	sp.addRange(values.begin(), values.end());
 
-	std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
-	std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 }
 
 static void	BigSpanTest(void) {
@@ -109,28 +110,29 @@ static void	BigSpanTest(void) {
 	Span sp(100001);
 	sp.addRange(values.begin(), values.end());
 
-	std::cout << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
-	std::cout << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Shortest span: " << BLUE << sp.shortestSpan() << RESET << std::endl;
+	std::cout << std::left << std::setw(15) << "Longest span: " << BLUE << sp.longestSpan() << RESET << std::endl;
 }
 
 int main()
 {
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Subject test --" << RESET << std::endl;
 	subjectTest();
-	std::cout << YELLOW << "-- Empty span test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Empty span test --" << RESET << std::endl;
 	emptySpanTest();
-	std::cout << YELLOW << "-- One number test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- One number test --" << RESET << std::endl;
 	oneNumberTest();
-	std::cout << YELLOW << "-- Full span test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Full span test --" << RESET << std::endl;
 	fullSpanTest();
-	std::cout << YELLOW << "-- Duplicates test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Duplicates test --" << RESET << std::endl;
 	duplicatesTest();
-	std::cout << YELLOW << "-- Negative numbers test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Negative numbers test --" << RESET << std::endl;
 	negativeNumbersTest();
-	std::cout << YELLOW << "-- Subject test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Subject test --" << RESET << std::endl;
 	addRangeTest();
-	std::cout << YELLOW << "-- 100 001 numbers test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- 100 001 numbers test --" << RESET << std::endl;
 	BigSpanTest();
+	std::cout << std::endl;
 
 	return (0);
 }
