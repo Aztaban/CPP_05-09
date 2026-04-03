@@ -80,14 +80,15 @@ static void testConstVector(void) {
 }
 
 int main(void) {
-	std::cout << YELLOW << "-- Vector test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Vector test --" << RESET << std::endl;
 	testVector();
-	std::cout << YELLOW << "-- List test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- List test --" << RESET << std::endl;
 	testList();
-	std::cout << YELLOW << "-- Deque test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Deque test --" << RESET << std::endl;
 	testDeque();
-	std::cout << YELLOW << "-- Const Vector test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Const Vector test --" << RESET << std::endl;
 	testConstVector();
+	std::cout << std::endl;
 
 	return (0);
 }
