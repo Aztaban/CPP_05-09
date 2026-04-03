@@ -19,9 +19,9 @@ int main(void) {
 
 	std::cout << YELLOW << "\n-- Equality check --" << RESET << std::endl;
 	if (originalPtr == newPtr)
-		std::cout << GREEN << "\nPointers are equal." << RESET << std::endl;
+		std::cout << GREEN << "Pointers are equal." << RESET << std::endl;
 	else
-		std::cout << RED << "\nPointers are not equal." << RESET << std::endl;
+		std::cout << RED << "Pointers are not equal." << RESET << std::endl;
 
 	std::cout << YELLOW << "\n-- Original pointer data --" << RESET << std::endl;
 	std::cout << std::left << std::setw(6) << "id: " << BLUE << originalPtr->id << RESET << std::endl;
@@ -29,5 +29,5 @@ int main(void) {
 
 	std::cout << YELLOW << "\n -- Deserialized pointer data --" << RESET << std::endl;
 	std::cout << std::left << std::setw(6) << "id: " << BLUE << originalPtr->id << RESET << std::endl;
-	std::cout << std::left << std::setw(6) << "name: " << BLUE << originalPtr->name << RESET << std::endl;
+	std::cout << std::left << std::setw(6) << "name: " << BLUE << originalPtr->name << RESET << std::endl << std::endl;
 }
