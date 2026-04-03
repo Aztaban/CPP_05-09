@@ -1,6 +1,7 @@
 #include <stack>
 #include <list>
 #include <iostream>
+#include <iomanip>
 #include "MutantStack.hpp"
 #include "Colors.hpp"
 
@@ -12,13 +13,18 @@ static void SubjectTest(void) {
 	mstack.push(17);
 	lst.push_back(5);
 	lst.push_back(17);
-	std::cout << "Label: " << BLUE << "MutantStack" << RESET << " | " << GREEN << "list" << RESET << std::endl;
-	std::cout << "Top: " << BLUE << mstack.top() << RESET << " | " << GREEN << lst.back() << RESET << std::endl;
+	std::cout << std::left << std::setw(7) << "Label: " << BLUE << "MStack"
+			  << RESET << " | " << GREEN << "list" << RESET << std::endl;
+	std::cout << std::left << std::setw(7) << "Top: " << BLUE << std::right
+			  << std::setw(6) << mstack.top() << RESET << " | " << GREEN << lst.back()
+			  << RESET << std::endl;
 	
 	mstack.pop();
 	lst.pop_back();
 	
-	std::cout << "Size: " << BLUE << mstack.size() << RESET << " | " << GREEN << lst.size() << RESET << std::endl;
+	std::cout << std::left << std::setw(7) << "Size: " << BLUE << std::right
+			  << std::setw(6) << mstack.size() << RESET << " | " << GREEN
+			  << lst.size() << RESET << std::endl;
 	
 	mstack.push(3);
 	mstack.push(5);
@@ -42,7 +48,8 @@ static void SubjectTest(void) {
 	
 	while (it != ite && itl != itel)
 	{
-		std::cout << "Value: " <<  BLUE << *it << RESET << " | " << GREEN << *itl << RESET << std::endl;
+		std::cout << std::left << std::setw(7) << "Value: " <<  BLUE << std::right
+				  << std::setw(6) << *it << RESET << " | " << GREEN << *itl << RESET << std::endl;
 		++it;
 		++itl;
 	}
@@ -59,8 +66,8 @@ static void	CopyTest(void) {
 
 	MutantStack<int>	copy(og);
 
-	std::cout << "Original top: " << BLUE << og.top() << RESET << std::endl;
-	std::cout << "Copy top: " << BLUE << copy.top() << RESET << std::endl;
+	std::cout << std::left << std::setw(14) << "Original top: " << BLUE << og.top() << RESET << std::endl;
+	std::cout << std::left << std::setw(14) << "Copy top: " << BLUE << copy.top() << RESET << std::endl;
 }
 
 static void	AssignmentTest(void) {
@@ -77,9 +84,9 @@ static void	AssignmentTest(void) {
 
 	second = first;
 	for (MutantStack<int>::iterator it = first.begin(); it != first.end(); it++)
-		std::cout << "Original value: " << BLUE << *it << RESET << std::endl;
+		std::cout << std::left << std::setw(12) << "Og value: " << BLUE << *it << RESET << std::endl;
 	for (MutantStack<int>::iterator it = second.begin(); it != second.end(); it++)
-		std::cout << "Copy value: " << BLUE << *it << RESET << std::endl;
+		std::cout << std::left << std::setw(12) << "Copy value: " << BLUE << *it << RESET << std::endl;
 }
 
 static void ConstTest(void)
@@ -87,6 +94,9 @@ static void ConstTest(void)
 	MutantStack<int> tmp;
 	tmp.push(42);
 	tmp.push(84);
+	tmp.push(126);
+	tmp.push(168);
+	tmp.push(210);
 
 	const MutantStack<int> copy(tmp);
 
@@ -97,14 +107,15 @@ static void ConstTest(void)
 
 int main()
 {
-	std::cout << YELLOW << "-- MutantStack subject test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- MutantStack subject test --" << RESET << std::endl;
 	SubjectTest();
-	std::cout << YELLOW << "-- Copy constructor test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Copy constructor test --" << RESET << std::endl;
 	CopyTest();
-	std::cout << YELLOW << "-- Copy assignment test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Copy assignment test --" << RESET << std::endl;
 	AssignmentTest();
-	std::cout << YELLOW << "-- Const iteration test --" << RESET << std::endl;
+	std::cout << YELLOW << "\n-- Const iteration test --" << RESET << std::endl;
 	ConstTest();
+	std::cout << std::endl;
 
 	return 0;
 }
