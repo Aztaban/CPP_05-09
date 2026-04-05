@@ -1,5 +1,5 @@
 # -------- Project --------
-NAME = bitcoinExchange
+NAME = btc
 
 SRC_DIR := src
 OBJ_DIR := build
@@ -35,12 +35,12 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@printf "$(BLU)Link$(RESET)   $(NAME)... "
 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME) && \
-		printf "%-17s[$(GRN)OK$(RESET)]\n" || \
+		printf "%-27s[$(GRN)OK$(RESET)]\n" || \
 		(printf "[$(RED)FAIL$(RESET)]\n"; exit 1)
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	@printf "CXX    %-35s " "$<"
+	@printf "CXX    %-33s " "$<"
 	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -MMD -MP -c $< -o $@ && \
 		printf "[$(GRN)OK$(RESET)]\n" || \
 		(printf "[$(RED)FAIL$(RESET)]\n"; exit 1)
