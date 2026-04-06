@@ -20,7 +20,6 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange& copy) : _rates(copy._rat
 BitcoinExchange::~BitcoinExchange(void) {}
 
 // OPERATOR OVERLOADS
-
 BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange& copy) {
 	if (this != &copy)
 		_rates = copy._rates;
@@ -134,15 +133,17 @@ void	BitcoinExchange::processInputFile(const std::string& inputFile) const {
 	double			rate;
 
 	if (!file.is_open())
-		throw std::runtime_error("Error: could not open file.");
+		throw std::runtime_error("Error: could not open file '" + inputFile + "'.");
 	if (!std::getline(file, line))
 		throw std::runtime_error("Error: empty input file.");
 	while (std::getline(file, line)) {
 		if (line.empty())
 			continue;
 		std::stringstream	sstream(line);
-		if (!std::getline(sstream, date, '|') || !std::getline(sstream, valueStr))
-			throw std::runtime_error("Error: bad input => " + line);
+		if (!std::getline(sstream, date, '|') || !std::getline(sstream, valueStr)) {
+			std::cerr << RED << "Error: bad input => " << line << RESET << std::endl;
+			continue;
+		}
 		date = trim(date);
 		valueStr = trim(valueStr);
 		if (!isValidDate(date)) {
@@ -158,7 +159,8 @@ void	BitcoinExchange::processInputFile(const std::string& inputFile) const {
 			continue;
 		}
 		if (value > 1000) {
-			std::cerr << RED << "Error: to large a number." << RESET << std::endl;
+			std::cerr << RED << "Error: too large a number." << RESET << std::endl;
+			continue;
 		}
 		try {
 			rate = getRateForDate(date);
