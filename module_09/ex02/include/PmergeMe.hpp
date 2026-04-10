@@ -5,13 +5,13 @@
 # include <deque>
 # include <string>
 
-class PmergMe {
+class PmergeMe {
 
 private:
     std::vector<int>	_vector;
     std::deque<int>     _deque;
 
-    PmergMe(void);
+    PmergeMe(void);
 
     int     parsePositiveInteger(const std::string& token) const;
     bool    isDuplicate(int value) const;
@@ -33,10 +33,10 @@ private:
     void    printSequence(const Container& sequence) const;
 
 public:
-    PmergMe(char **argv);
-    PmergMe(const PmergMe& copy);
-    PmergMe&    operator=(const PmergMe& copy);
-    ~PmergMe(void);
+    PmergeMe(char **argv);
+    PmergeMe(const PmergeMe& copy);
+    PmergeMe&    operator=(const PmergeMe& copy);
+    ~PmergeMe(void);
 
     void    process(void);
 

@@ -1,4 +1,5 @@
 #include "PmergeMe.hpp"
+#include "Colors.hpp"
 
 #include <stdexcept>
 #include <sstream>
@@ -9,19 +10,19 @@
 #include <ctime>
 
 // CONSTRUCTORS AND DESTRUCTOR
-PmergMe::PmergMe(void) {}
+PmergeMe::PmergeMe(void) {}
 
-PmergMe::PmergMe(char **argv) {
+PmergeMe::PmergeMe(char **argv) {
     parseInput(argv);
 }
 
-PmergMe::PmergMe(const PmergMe& copy) : _vector(copy._vector), _deque(copy._deque) {}
+PmergeMe::PmergeMe(const PmergeMe& copy) : _vector(copy._vector), _deque(copy._deque) {}
 
-PmergMe::~PmergMe(void) {}
+PmergeMe::~PmergeMe(void) {}
 
 // OPERATORS OVERLOADS
 
-PmergMe&    PmergMe::operator=(const PmergMe& copy) {
+PmergeMe&    PmergeMe::operator=(const PmergeMe& copy) {
     if (this != &copy) {
         _vector = copy._vector;
         _deque = copy._deque;
@@ -30,7 +31,7 @@ PmergMe&    PmergMe::operator=(const PmergMe& copy) {
 }
 
 // MEMBER FUNCTIONS
-int    PmergMe::parsePositiveInteger(const std::string& token) const {
+int    PmergeMe::parsePositiveInteger(const std::string& token) const {
     std::stringstream   sstream(token);
     long    value;
     char    extra;
@@ -42,7 +43,7 @@ int    PmergMe::parsePositiveInteger(const std::string& token) const {
     return (static_cast<int>(value));
 }
 
-bool    PmergMe::isDuplicate(int value) const {
+bool    PmergeMe::isDuplicate(int value) const {
     for (std::vector<int>::const_iterator it = _vector.begin(); it != _vector.end(); it++) {
         if (*it == value)
             return (true);
@@ -50,7 +51,7 @@ bool    PmergMe::isDuplicate(int value) const {
     return (false);
 }
 
-void    PmergMe::parseInput(char **argv) {
+void    PmergeMe::parseInput(char **argv) {
     int i = 1;
     int value;
 
@@ -65,3 +66,88 @@ void    PmergMe::parseInput(char **argv) {
     if (_vector.empty())
         throw std::runtime_error("Error: parsing failed")
 }
+
+void    PmergeMe::sortVector(void) {
+    _vector = fordJohnsonVector(_vector);
+}
+
+void    PmergeMe::sortDeque(void) {
+    _deque = fordJohnsonDeque(_deque);
+}
+
+void    PmergeMe::process(void) {
+    clock_t startVec;
+    clock_t endVec;
+    clock_t startDeq;
+    clock_t endDeq;
+    double  vecTime;
+    double  deqTime;
+
+    std::cout << YELLLOW << "-- VECTOR FORD JOHNSON --" << RESET << std::endl;
+    std::cout << "Before: " << BLUE;
+    printSequence(_vector);
+    std::cout << RESET << std::endl;
+
+    startVec = clock();
+    sortVector();
+    endVec = clock();
+
+    std::cout << "After: " << GREEN;
+    printSequence(_vector);
+    std::cout << RESET << std::endl;
+
+    std::cout << YELLLOW << "-- DEQUE FORD JOHNSON --" << RESET << std::endl;
+    std::cout << "Before: " << BLUE;
+    printSequence(_deque);
+    std::cout << RESET << std::endl;
+
+    startDeq = clock();
+    sortDeque();
+    endDeq = clock();
+
+    std::cout << "After: " << GREEN;
+    printSequence(_deque);
+    std::cout << RESET << std::endl;
+
+    vecTime = static_cast<double>(endVec - startVec) / CLOCKS_PER_SEC * 1000000.0;
+    deqTime = static_cast<double>(endDeq - startDeq) / CLOCKS_PER_SEC * 1000000.0;
+
+    std::cout << YELLOW << "-- RESULTS --" << RESET << std::endl;
+    std::cout << "Time to process a range of " << YELLOW << _vector.size() << RESET
+              << " elements with " << YELLOW << "std::vector" << RESET << " : "
+              << GREEN << vecTime << RESET << " us" << std::endl;
+    std::cout << "Time to process a range of " << YELLOW << _deque.size() << RESET
+              << " elements with " << YELLOW << "std::deque" << RESET << " : "
+              << GREEN << deqTime << RESET << " us" << std::endl;
+}
+
+// void    PmergeMe::process(void) {
+//     clock_t startVec;
+//     clock_t endVec;
+//     clock_t startDeq;
+//     clock_t endDeq;
+//     double  vecTime;
+//     double  deqTime;
+
+//     std::cout << "Before: ";
+//     printSequence(_vector);
+
+//     startVec = clock();
+//     sortVector();
+//     endVec = clock();
+
+//     startDeq = clock();
+//     sortDeque();
+//     endDeq = clock();
+
+//     vecTime = static_cast<double>(endVec - startVec) / CLOCKS_PER_SEC * 1000000.0;
+//     deqTime = static_cast<double>(endDeq - startDeq) / CLOCKS_PER_SEC * 1000000.0;
+
+//     std::cout << "After: ";
+//     printSequence(_vector);
+
+//     std::cout << "Time to process a range of " << _vector.size()
+//               << " elements with std::vector : " << vecTime << " us" << std::endl;
+//     std::cout << "Time to process a range of " << _deque.size()
+//               << " elements with std::deque : " << deqTime << " us" << std::endl;
+// }
