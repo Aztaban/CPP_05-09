@@ -9,53 +9,64 @@
 class PmergeMe {
 
 private:
-    std::vector<int>	_vector;
-    std::deque<int>     _deque;
+	std::vector<int>	_vector;
+	std::deque<int>		_deque;
 
-    PmergeMe(void);
+	PmergeMe(void);
 
-    int     parsePositiveInteger(const std::string& token) const;
-    bool    isDuplicate(int value) const;
-    void    parseInput(char **argv);
+	struct Pair {
+		int			small;
+		int			big;
+		std::size_t	id;
 
-    void    sortVector(void);
-    void    sortDeque(void);
+		Pair(void);
+		Pair(int small, int big, std::size_t pairID);
+	};
 
-    std::vector<int>    fordJohnsonVector(const std::vector<int>& input);
-    std::deque<int>     fordJohnsonDeque(const std::deque<int>& input);
+	// PARSING
+	int		parsePositiveInteger(const std::string& token) const;
+	bool	isDuplicate(int value) const;
+	void	parseInput(char **argv);
 
-    std::vector<int>    mergeInsertVectorPairs(const std::vector<int>& input);
-    std::deque<int>     mergeInsertDequePairs(const std::deque<int>& input);
+	// SORT
+	void	sortVector(void);
+	void	sortDeque(void);
 
-    void    buildVectorPairs(const std::vector<int>& input,
-            std::vector< std::pair<int,int> >& pairs,
-            bool& hasStraggler,
-            int straggler);
+	// FORD-JOHNSON (VECTOR)
+	std::vector<int>	fordJohnsonVector(const std::vector<int>& input);
+	std::vector<Pair>	makePairsVector(const std::vector<int>& input,
+										bool& hasStraggler, int& straggler);
 
-    void    buildVectorPairs(const std::vector<int>& input,
-            std::vector< std::pair<int,int> >& pairs,
-            bool& hasStraggler,
-            int straggler);
+	void	sortPairsVector(std::vector<Pair>& pairs);
+	void	insertPendVector(std::vector<Pair>& pairs, bool hasStraggler,
+							int straggler, std::vector<int>& mainChain);
 
-    std::vector< std::pair<int,int> > sortVectorPairsByLarge(const std::vector< std::pair<int, int>& pairs);
-    std::vector< std::pair<int,int> > sortDequePairsByLarge(const std::deque< std::pair<int, int>& pairs);
 
-    std::vector<int>::iterator  vecBinSearchPos(std::vector<int>& container,
-                                std::vector<int>::iterator endIt, int value);
-    std::deque<int>::iterator   deqBinSearchPos(std::deque<int>& container,
-                                std::deque<int>::iterator endIt, int value);
+	// FORD-JOHNSON (DEQUE)
+	std::deque<int>		fordJohnsonDeque(const std::deque<int>& input);
+	std::deque<Pair>	makePairsDeque(const std::deque<int>& input,
+										bool& hasStraggler, int& straggler);
 
-    template <typename Container>
-    void    printSequence(const Container& sequence) const;
+	void	sortPairsDeque(std::deque<Pair>& pairs);
+	void	insertPendVector(std::vector<Pair>& pairs, bool hasStraggler,
+							int straggler, std::vector<int>& mainChain);
+
+	// HELPERS
+	static std::size_t	jacobsthal(std::size_t n);
+	static std::vector<std::size_t>	buildInsertionOrder(std::size_t size);
+
+	// PRINT
+	template <typename Container>
+	void	printSequence(const Container& sequence) const;
 
 public:
-    PmergeMe(char **argv);
-    PmergeMe(const PmergeMe& copy);
-    PmergeMe&    operator=(const PmergeMe& copy);
-    ~PmergeMe(void);
+	PmergeMe(char **argv);
+	PmergeMe(const PmergeMe& copy);
+	PmergeMe&	operator=(const PmergeMe& copy);
+	~PmergeMe(void);
 
-    //void    process(void);
-    void    debugProcess(void);
+	//void	process(void);
+	void	debugProcess(void);
 
 };
 
