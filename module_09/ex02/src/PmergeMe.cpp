@@ -75,7 +75,7 @@ void    PmergeMe::sortDeque(void) {
     _deque = fordJohnsonDeque(_deque);
 }
 
-void    PmergeMe::process(void) {
+void    PmergeMe::debugProcess(void) {
     clock_t startVec;
     clock_t endVec;
     clock_t startDeq;
@@ -151,3 +151,82 @@ void    PmergeMe::process(void) {
 //     std::cout << "Time to process a range of " << _deque.size()
 //               << " elements with std::deque : " << deqTime << " us" << std::endl;
 // }
+
+void    PmergeMe::buildVectorPairs(const std::vector<int>& input,
+        std::vector< std::pair<int,int> >& larger,
+        bool& hasStraggler,
+        int straggler)
+{
+    std::vector<int>::size_type i = 0;
+    int first;
+    int second;
+    
+    pairs.clear();
+    hasStraggler = false;
+    while (i + 1 < input.size()) {
+        first = input[i];
+        second = input[i + 1];
+        if (first < second)
+            pairs.push_back(std::make_pair(first, second));
+        else
+            pairs.push_back(std::make_pair(second, first));
+        i += 2;
+    }
+    if (i < input.size()) {
+        hasStraggler = true;
+        straggler = input[i];
+    }
+}
+
+std::vector<int>::iterator  PmergeMe::vecBinSearchPos(std::vector<int>& container,
+        std::vector<int>::iterator endIt, int value)
+{
+    std::vector<int>::size_type left;
+    std::vector<int>::size_type right;
+    std::vector<int>::size_type mid;
+
+    left = container.begin();
+    right = endIt;
+    while (left < right)
+    {
+        mid = left + (right - left) / 2;
+        if (*mid < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return (left);
+}
+
+std::vector<int>    PmergeMe::fordJohnsonVector(const std::vector<int>& input) {
+    std::vector< std::pair<int,int> >   pairs;
+    std::vector< std::pair<int,int> >   sortedPairs;
+    std::vector<int>::size_type i = 0;
+    std::vector<int>::iterator  boundary;  
+    std::vector<int>    mainChain;
+    bool    hasStraggler;
+    int     straggler;
+
+    if (input.size() <= 1)
+        return (input);
+    buildVectorPairs(input, pairs, hasStraggler, straggler);
+    sortedPairs = sortVectorPairsByLarge(pairs);
+    
+    while (i < sortedPairs.size()) {
+        mainChain.push_back(sortedPairs[i].second);
+        i++;
+    }
+
+    i = 0;
+    while (i < sortedPairs.size()) {
+        boundary = mainChain.begin();
+        while (boundary != mainChain.end() && *boundary != sortedPairs[i].second)
+            boundary++;
+        mainChain.insert(vecBinSearchPos(mainChain, boundary, sortedPairs[i].first), sortedPairs[i].first);
+        i++;
+    }
+
+    if (hasStraggler)
+        mainChain.insert(vecBinSearchPos(mainChain, straggler), straggler);
+    return (mainChain);
+}

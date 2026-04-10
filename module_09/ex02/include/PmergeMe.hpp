@@ -4,6 +4,7 @@
 # include <vector>
 # include <deque>
 # include <string>
+# include <utility>
 
 class PmergeMe {
 
@@ -26,8 +27,23 @@ private:
     std::vector<int>    mergeInsertVectorPairs(const std::vector<int>& input);
     std::deque<int>     mergeInsertDequePairs(const std::deque<int>& input);
 
-    std::vector<int>::iterator  vecBinSearchPos(std::vector<int>& container, int value);
-    std::deque<int>::iterator   deqBinSearchPos(std::deque<int>& container, int value);
+    void    buildVectorPairs(const std::vector<int>& input,
+            std::vector< std::pair<int,int> >& pairs,
+            bool& hasStraggler,
+            int straggler);
+
+    void    buildVectorPairs(const std::vector<int>& input,
+            std::vector< std::pair<int,int> >& pairs,
+            bool& hasStraggler,
+            int straggler);
+
+    std::vector< std::pair<int,int> > sortVectorPairsByLarge(const std::vector< std::pair<int, int>& pairs);
+    std::vector< std::pair<int,int> > sortDequePairsByLarge(const std::deque< std::pair<int, int>& pairs);
+
+    std::vector<int>::iterator  vecBinSearchPos(std::vector<int>& container,
+                                std::vector<int>::iterator endIt, int value);
+    std::deque<int>::iterator   deqBinSearchPos(std::deque<int>& container,
+                                std::deque<int>::iterator endIt, int value);
 
     template <typename Container>
     void    printSequence(const Container& sequence) const;
@@ -38,7 +54,8 @@ public:
     PmergeMe&    operator=(const PmergeMe& copy);
     ~PmergeMe(void);
 
-    void    process(void);
+    //void    process(void);
+    void    debugProcess(void);
 
 };
 
