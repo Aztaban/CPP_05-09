@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <climits>
 #include <cctype>
-#include <iostream>
 #include <ctime>
+#include <algorithm>
 
 // CONSTRUCTORS AND DESTRUCTOR
 PmergeMe::PmergeMe(void) {}
@@ -20,6 +20,10 @@ PmergeMe::PmergeMe(const PmergeMe& copy) : _vector(copy._vector), _deque(copy._d
 
 PmergeMe::~PmergeMe(void) {}
 
+PmergeMe::Pair::Pair(void) : small(0), big (0), id(0) {}
+PmergeMe::Pair::Pair(int small, int big, std::size_t pairId)
+	: small(small), big (big), id(pairId) {}
+
 // OPERATORS OVERLOADS
 
 PmergeMe&	PmergeMe::operator=(const PmergeMe& copy) {
@@ -31,6 +35,8 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& copy) {
 }
 
 // MEMBER FUNCTIONS
+
+// PARSING
 int	PmergeMe::parsePositiveInteger(const std::string& token) const {
 	std::stringstream   sstream(token);
 	long	value;
@@ -63,6 +69,7 @@ void	PmergeMe::parseInput(char **argv) {
 		throw std::runtime_error("Error: parsing failed");
 }
 
+// SORT
 void	PmergeMe::sortVector(void) {
 	_vector = fordJohnsonVector(_vector);
 }
@@ -71,6 +78,85 @@ void	PmergeMe::sortDeque(void) {
 	_deque = fordJohnsonDeque(_deque);
 }
 
+// HELPERS
+
+// FORD-JOHNSON (VECTOR)
+std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
+	const std::vector<int>& input,
+	bool& hasStraggler,
+	int& straggler)
+{
+	std::vector<Pair>	pairs;
+	std::size_t	i = 0;
+	std::size_t	pairId = 0;
+
+	hasStraggler = false;
+	straggler = 0;
+
+	while (i + 1 < input.size()) {
+		int	first = input[i];
+		int	second = input[i + 1];
+
+		if (first < second)
+			pairs.push_back(Pair(first, second, pairId));
+		else
+			pairs.push_back(Pair(second, first, pairId));
+		pairId++;
+		i += 2;
+	}
+
+	if (i < input.size()) {
+		hasStraggler = true;
+		straggler = input[i];
+	}
+	return (pairs);
+}
+
+std::vector<int>	PmergeMe::fordJohnsonVector(const std::vector<int>& input) {
+	std::vector<int> result(input);
+	std::sort(result.begin(), result.end());
+	return (result);
+}
+
+// FORD-JOHNSON (DEQUE)
+std::deque<int>	PmergeMe::fordJohnsonDeque(const std::deque<int>& input) {
+	std::deque<int> result(input);
+	std::sort(result.begin(), result.end());
+	return (result);
+}
+
+std::deque<PmergeMe::Pair>	PmergeMe::makePairsDeque(
+	const std::deque<int>& input,
+	bool& hasStraggler,
+	int& straggler)
+{
+	std::deque<Pair>	pairs;
+	std::size_t	i = 0;
+	std::size_t	pairId = 0;
+
+	hasStraggler = false;
+	straggler = 0;
+
+	while (i + 1 < input.size()) {
+		int	first = input[i];
+		int	second = input[i + 1];
+
+		if (first < second)
+			pairs.push_back(Pair(first, second, pairId));
+		else
+			pairs.push_back(Pair(second, first, pairId));
+		pairId++;
+		i += 2;
+	}
+
+	if (i < input.size()) {
+		hasStraggler = true;
+		straggler = input[i];
+	}
+	return (pairs);
+}
+
+// PROCESS
 void	PmergeMe::debugProcess(void) {
 	clock_t startVec;
 	clock_t endVec;

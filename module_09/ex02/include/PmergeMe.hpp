@@ -5,6 +5,7 @@
 # include <deque>
 # include <string>
 # include <utility>
+# include <iostream>
 
 class PmergeMe {
 
@@ -20,7 +21,7 @@ private:
 		std::size_t	id;
 
 		Pair(void);
-		Pair(int small, int big, std::size_t pairID);
+		Pair(int small, int big, std::size_t pairId);
 	};
 
 	// PARSING
@@ -32,6 +33,10 @@ private:
 	void	sortVector(void);
 	void	sortDeque(void);
 
+	// HELPERS
+	static std::size_t	jacobsthal(std::size_t n);
+	static std::vector<std::size_t>	buildInsertionOrder(std::size_t size);
+
 	// FORD-JOHNSON (VECTOR)
 	std::vector<int>	fordJohnsonVector(const std::vector<int>& input);
 	std::vector<Pair>	makePairsVector(const std::vector<int>& input,
@@ -40,7 +45,7 @@ private:
 	void	sortPairsVector(std::vector<Pair>& pairs);
 	void	insertPendVector(std::vector<Pair>& pairs, bool hasStraggler,
 							int straggler, std::vector<int>& mainChain);
-
+							
 
 	// FORD-JOHNSON (DEQUE)
 	std::deque<int>		fordJohnsonDeque(const std::deque<int>& input);
@@ -48,12 +53,9 @@ private:
 										bool& hasStraggler, int& straggler);
 
 	void	sortPairsDeque(std::deque<Pair>& pairs);
-	void	insertPendVector(std::vector<Pair>& pairs, bool hasStraggler,
-							int straggler, std::vector<int>& mainChain);
+	void	insertPendDeque(std::deque<Pair>& pairs, bool hasStraggler,
+							int straggler, std::deque<int>& mainChain);
 
-	// HELPERS
-	static std::size_t	jacobsthal(std::size_t n);
-	static std::vector<std::size_t>	buildInsertionOrder(std::size_t size);
 
 	// PRINT
 	template <typename Container>

@@ -9,5 +9,4 @@ void	PmergeMe::printSequence(const Container& sequence) const {
 		if (it != end)
 			std::cout << " ";
 	}
-	std::cout << std::endl;
 }
