@@ -79,8 +79,68 @@ void	PmergeMe::sortDeque(void) {
 }
 
 // HELPERS
+std::size_t	PmergeMe::jacobsthal(std::size_t n)
+{
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+
+	std::size_t prev2 = 0;
+	std::size_t prev1 = 1;
+	std::size_t current = 0;
+
+	for (std::size_t i = 2; i <= n; ++i)
+	{
+		current = prev1 + 2 * prev2;
+		prev2 = prev1;
+		prev1 = current;
+	}
+	return (current);
+}
+
+std::vector<std::size_t>	PmergeMe::buildInsertionOrder(std::size_t size) {
+	std::vector<std::size_t>	order;
+
+	if (size <= 1)
+		return (order);
+
+	std::size_t	prevJacobs = 1;
+	std::size_t	k = 3;
+
+	while (true) {
+		std::size_t	currJacobs = jacobsthal(k);
+		if (currJacobs > size)
+			currJacobs = size;
+		for (std::size_t i = currJacobs; i > prevJacobs; i--)
+			order.push_back(i - 1);
+		if (currJacobs == size)
+			break;
+		prevJacobs = jacobsthal(k);
+		k++;
+	}
+	return (order);
+}
 
 // FORD-JOHNSON (VECTOR)
+std::vector<int>	PmergeMe::fordJohnsonVector(const std::vector<int>& input)
+{
+	bool hasStraggler;
+	int straggler;
+	std::vector<Pair> pairs = makePairsVector(input, hasStraggler, straggler);
+
+	std::cout << YELLOW << "Vector pairs:" << RESET << std::endl;
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+	{
+		std::cout << "(" << pairs[i].small << ", " << pairs[i].big
+				  << ") id=" << pairs[i].id << std::endl;
+	}
+	if (hasStraggler)
+		std::cout << "straggler: " << straggler << std::endl;
+
+	return input;
+}
+
 std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
 	const std::vector<int>& input,
 	bool& hasStraggler,
@@ -110,12 +170,6 @@ std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
 		straggler = input[i];
 	}
 	return (pairs);
-}
-
-std::vector<int>	PmergeMe::fordJohnsonVector(const std::vector<int>& input) {
-	std::vector<int> result(input);
-	std::sort(result.begin(), result.end());
-	return (result);
 }
 
 // FORD-JOHNSON (DEQUE)
