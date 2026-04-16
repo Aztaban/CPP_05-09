@@ -128,8 +128,11 @@ std::vector<int>	PmergeMe::fordJohnsonVector(const std::vector<int>& input)
 	bool hasStraggler;
 	int straggler;
 	std::vector<Pair> pairs = makePairsVector(input, hasStraggler, straggler);
+	std::vector<int> mainChain;
 
-	std::cout << YELLOW << "Vector pairs:" << RESET << std::endl;
+	sortPairsVector(pairs);
+
+	std::cout << YELLOW << "Sorted vector pairs:" << RESET << std::endl;
 	for (std::size_t i = 0; i < pairs.size(); ++i)
 	{
 		std::cout << "(" << pairs[i].small << ", " << pairs[i].big
@@ -138,7 +141,10 @@ std::vector<int>	PmergeMe::fordJohnsonVector(const std::vector<int>& input)
 	if (hasStraggler)
 		std::cout << "straggler: " << straggler << std::endl;
 
-	return input;
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		mainChain.push_back(pairs[i].big);
+
+	return (mainChain);
 }
 
 std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
@@ -170,6 +176,19 @@ std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
 		straggler = input[i];
 	}
 	return (pairs);
+}
+
+void	PmergeMe::sortPairsVector(std::vector<Pair>& pairs) {
+	for (std::size_t i = 1; i < pairs.size(); i++) {
+		Pair key = pairs[i];
+		std::size_t j = i;
+
+		while (j > 0 && pairs[j - 1].big > key.big) {
+			pairs[j] = pairs[j - 1];
+			j--;
+		}
+		pairs[j] = key;
+	}
 }
 
 // FORD-JOHNSON (DEQUE)
