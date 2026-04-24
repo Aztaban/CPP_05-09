@@ -6,6 +6,7 @@
 # include <string>
 # include <utility>
 # include <iostream>
+# include <cstddef>
 
 class PmergeMe {
 
@@ -24,37 +25,49 @@ private:
 		Pair(int small, int big, std::size_t pairId);
 	};
 
+	struct Node {
+		int			value;
+		std::size_t	pairId;
+		bool		isBig;
+
+		Node(void);
+		Node(int value, std::size_t pairId, bool isBig);
+	};
+
 	// PARSING
-	int		parsePositiveInteger(const std::string& token) const;
-	bool	isDuplicate(int value) const;
-	void	parseInput(char **argv);
+	int		_parsePositiveInteger(const std::string& token) const;
+	bool	_isDuplicate(int value) const;
+	void	_parseInput(char **argv);
 
 	// SORT
-	void	sortVector(void);
-	void	sortDeque(void);
+	void	_sortVector(void);
+	void	_sortDeque(void);
 
 	// HELPERS
-	static std::size_t	jacobsthal(std::size_t n);
-	static std::vector<std::size_t>	buildInsertionOrder(std::size_t size);
+	static std::size_t	_jacobsthal(std::size_t n);
+	static std::vector<std::size_t>	_buildInsertionOrder(std::size_t size);
+
 
 	// FORD-JOHNSON (VECTOR)
-	std::vector<int>	fordJohnsonVector(const std::vector<int>& input);
-	std::vector<Pair>	makePairsVector(const std::vector<int>& input,
+	std::vector<int>	_fordJohnsonVector(const std::vector<int>& input);
+	std::vector<Pair>	_makePairsVector(const std::vector<int>& input,
 										bool& hasStraggler, int& straggler);
 
-	void	sortPairsVector(std::vector<Pair>& pairs);
-	void	insertPendVector(std::vector<Pair>& pairs, bool hasStraggler,
-							int straggler, std::vector<int>& mainChain);
-							
+	void	_sortPairsVector(std::vector<Pair>& pairs);
+	void	_insertPendVector(const std::vector<Pair>& pairs, bool hasStraggler,
+							int straggler, std::vector<Node>& mainChain);
+
+	std::size_t	_findBigPositionVector(const std::vector<Node>& chain, std::size_t pairId);
+	std::size_t	_vectorBinarySearchPos(const std::vector<Node>& chain, int value, std::size_t endExclusive);
 
 	// FORD-JOHNSON (DEQUE)
-	std::deque<int>		fordJohnsonDeque(const std::deque<int>& input);
-	std::deque<Pair>	makePairsDeque(const std::deque<int>& input,
+	std::deque<int>		_fordJohnsonDeque(const std::deque<int>& input);
+	std::deque<Pair>	_makePairsDeque(const std::deque<int>& input,
 										bool& hasStraggler, int& straggler);
 
-	void	sortPairsDeque(std::deque<Pair>& pairs);
-	void	insertPendDeque(std::deque<Pair>& pairs, bool hasStraggler,
-							int straggler, std::deque<int>& mainChain);
+	void	_sortPairsDeque(std::deque<Pair>& pairs);
+	void	_insertPendDeque(std::deque<Pair>& pairs, bool hasStraggler,
+							int straggler, std::deque<Node>& mainChain);
 
 
 	// PRINT

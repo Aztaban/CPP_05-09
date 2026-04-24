@@ -7,13 +7,12 @@
 #include <climits>
 #include <cctype>
 #include <ctime>
-#include <algorithm>
 
 // CONSTRUCTORS AND DESTRUCTOR
 PmergeMe::PmergeMe(void) {}
 
 PmergeMe::PmergeMe(char **argv) {
-	parseInput(argv);
+	_parseInput(argv);
 }
 
 PmergeMe::PmergeMe(const PmergeMe& copy) : _vector(copy._vector), _deque(copy._deque) {}
@@ -23,6 +22,10 @@ PmergeMe::~PmergeMe(void) {}
 PmergeMe::Pair::Pair(void) : small(0), big (0), id(0) {}
 PmergeMe::Pair::Pair(int small, int big, std::size_t pairId)
 	: small(small), big (big), id(pairId) {}
+
+PmergeMe::Node::Node(void) : value(0), pairId(0), isBig(false) {}
+PmergeMe::Node::Node(int value, std::size_t pairId, bool isBig)
+	: value(value), pairId(pairId), isBig(isBig) {}
 
 // OPERATORS OVERLOADS
 
@@ -37,7 +40,7 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& copy) {
 // MEMBER FUNCTIONS
 
 // PARSING
-int	PmergeMe::parsePositiveInteger(const std::string& token) const {
+int	PmergeMe::_parsePositiveInteger(const std::string& token) const {
 	std::stringstream   sstream(token);
 	long	value;
 	char	extra;
@@ -49,7 +52,7 @@ int	PmergeMe::parsePositiveInteger(const std::string& token) const {
 	return (static_cast<int>(value));
 }
 
-bool	PmergeMe::isDuplicate(int value) const {
+bool	PmergeMe::_isDuplicate(int value) const {
 	for (std::vector<int>::const_iterator it = _vector.begin(); it != _vector.end(); it++) {
 		if (*it == value)
 			return (true);
@@ -57,10 +60,10 @@ bool	PmergeMe::isDuplicate(int value) const {
 	return (false);
 }
 
-void	PmergeMe::parseInput(char **argv) {
+void	PmergeMe::_parseInput(char **argv) {
 	for (int i = 1; argv[i]; i++) {
-		int value = parsePositiveInteger(argv[i]);
-		if (isDuplicate(value))
+		int value = _parsePositiveInteger(argv[i]);
+		if (_isDuplicate(value))
 			throw std::runtime_error("Error: input contains duplicates");
 		_vector.push_back(value);
 		_deque.push_back(value);
@@ -70,16 +73,17 @@ void	PmergeMe::parseInput(char **argv) {
 }
 
 // SORT
-void	PmergeMe::sortVector(void) {
-	_vector = fordJohnsonVector(_vector);
+void	PmergeMe::_sortVector(void) {
+	_vector = _fordJohnsonVector(_vector);
 }
 
-void	PmergeMe::sortDeque(void) {
-	_deque = fordJohnsonDeque(_deque);
+void	PmergeMe::_sortDeque(void) {
+	_deque = _fordJohnsonDeque(_deque);
 }
 
 // HELPERS
-std::size_t	PmergeMe::jacobsthal(std::size_t n)
+
+std::size_t	PmergeMe::_jacobsthal(std::size_t n)
 {
 	if (n == 0)
 		return 0;
@@ -99,7 +103,7 @@ std::size_t	PmergeMe::jacobsthal(std::size_t n)
 	return (current);
 }
 
-std::vector<std::size_t>	PmergeMe::buildInsertionOrder(std::size_t size) {
+std::vector<std::size_t>	PmergeMe::_buildInsertionOrder(std::size_t size) {
 	std::vector<std::size_t>	order;
 
 	if (size <= 1)
@@ -109,45 +113,48 @@ std::vector<std::size_t>	PmergeMe::buildInsertionOrder(std::size_t size) {
 	std::size_t	k = 3;
 
 	while (true) {
-		std::size_t	currJacobs = jacobsthal(k);
+		std::size_t	currJacobs = _jacobsthal(k);
 		if (currJacobs > size)
 			currJacobs = size;
 		for (std::size_t i = currJacobs; i > prevJacobs; i--)
 			order.push_back(i - 1);
 		if (currJacobs == size)
 			break;
-		prevJacobs = jacobsthal(k);
+		prevJacobs = currJacobs;
 		k++;
 	}
 	return (order);
 }
 
 // FORD-JOHNSON (VECTOR)
-std::vector<int>	PmergeMe::fordJohnsonVector(const std::vector<int>& input)
+std::vector<int>	PmergeMe::_fordJohnsonVector(const std::vector<int>& input)
 {
+	if (input.size() <= 1)
+		return (input);
+
 	bool hasStraggler;
 	int straggler;
-	std::vector<Pair> pairs = makePairsVector(input, hasStraggler, straggler);
-	std::vector<int> mainChain;
+	std::vector<Pair> pairs = _makePairsVector(input, hasStraggler, straggler);
+	std::vector<Node> mainChain;
+	std::vector<int> result;
 
-	sortPairsVector(pairs);
+	_sortPairsVector(pairs);
 
-	std::cout << YELLOW << "Sorted vector pairs:" << RESET << std::endl;
-	for (std::size_t i = 0; i < pairs.size(); ++i)
-	{
-		std::cout << "(" << pairs[i].small << ", " << pairs[i].big
-				  << ") id=" << pairs[i].id << std::endl;
-	}
-	if (hasStraggler)
-		std::cout << "straggler: " << straggler << std::endl;
+	for (std::size_t i = 0; i < pairs.size(); i++)
+		mainChain.push_back(Node(pairs[i].big, pairs[i].id, true));
+	
+	if (!pairs.empty())
+		mainChain.insert(mainChain.begin(), Node(pairs[0].small, pairs[0].id, false));
 
-	for (std::size_t i = 0; i < pairs.size(); ++i)
-		mainChain.push_back(pairs[i].big);
+	_insertPendVector(pairs, hasStraggler, straggler, mainChain);
 
-	return (mainChain);
+	for (std::size_t i = 0; i < mainChain.size(); i++)
+		result.push_back(mainChain[i].value);
+
+	return (result);
 }
 
-std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
+std::vector<PmergeMe::Pair>	PmergeMe::_makePairsVector(
 	const std::vector<int>& input,
 	bool& hasStraggler,
 	int& straggler)
@@ -178,27 +185,84 @@ std::vector<PmergeMe::Pair>	PmergeMe::makePairsVector(
 	return (pairs);
 }
 
-void	PmergeMe::sortPairsVector(std::vector<Pair>& pairs) {
-	for (std::size_t i = 1; i < pairs.size(); i++) {
-		Pair key = pairs[i];
-		std::size_t j = i;
+void	PmergeMe::_sortPairsVector(std::vector<Pair>& pairs) {
+	if (pairs.size() <= 1)
+		return;
 
-		while (j > 0 && pairs[j - 1].big > key.big) {
-			pairs[j] = pairs[j - 1];
-			j--;
+	std::vector<int>	winners;
+	std::vector<Pair>	sortedPairs;
+
+	for (std::size_t i = 0; i < pairs.size(); i++)
+		winners.push_back(pairs[i].big);
+	
+	winners = _fordJohnsonVector(winners);
+	for (std::size_t i = 0; i < winners.size(); i++) {
+		for (std::size_t j = 0; pairs.size(); j++) {
+			if (pairs[j].big == winners[i]) {
+				sortedPairs.push_back(pairs[j]);
+				break;
+			}
 		}
-		pairs[j] = key;
+	}
+	pairs = sortedPairs;
+}
+
+void	PmergeMe::_insertPendVector(const std::vector<Pair>& pairs, bool hasStraggler,
+							int straggler, std::vector<Node>& mainChain)
+{
+	std::vector<std::size_t> order = _buildInsertionOrder(pairs.size());
+
+	for (std::size_t i = 0; i < order.size(); i++) {
+		std::size_t pairIndex = order[i];
+		const Pair& pair = pairs[pairIndex];
+
+		std::size_t bigPos = _findBigPositionVector(mainChain, pair.id);
+		std::size_t insertPos = _vectorBinarySearchPos(mainChain, pair.small, bigPos);
+
+		mainChain.insert(mainChain.begin() + insertPos,
+			Node(pair.small, pair.id, false));
+	}
+
+	if (hasStraggler) {
+		std::size_t insertPos = _vectorBinarySearchPos(mainChain, straggler, mainChain.size());
+		mainChain.insert(mainChain.begin() + insertPos, Node(straggler, static_cast<std::size_t>(-1), false));
 	}
 }
 
+std::size_t	PmergeMe::_findBigPositionVector(const std::vector<Node>& chain, std::size_t pairId)
+{
+	for (std::size_t i = 0; i < chain.size(); ++i)
+	{
+		if (chain[i].pairId == pairId && chain[i].isBig)
+			return i;
+	}
+	return chain.size();
+}
+
+std::size_t	PmergeMe::_vectorBinarySearchPos(const std::vector<Node>& chain,
+									int value, std::size_t endExclusive)
+{
+	std::size_t left = 0;
+	std::size_t right = endExclusive;
+
+	while (left < right)
+	{
+		std::size_t mid = left + (right - left) / 2;
+		if (chain[mid].value < value)
+			left = mid + 1;
+		else
+			right = mid;
+	}
+	return left;
+}
+
 // FORD-JOHNSON (DEQUE)
-std::deque<int>	PmergeMe::fordJohnsonDeque(const std::deque<int>& input) {
+std::deque<int>	PmergeMe::_fordJohnsonDeque(const std::deque<int>& input) {
 	std::deque<int> result(input);
-	std::sort(result.begin(), result.end());
 	return (result);
 }
 
-std::deque<PmergeMe::Pair>	PmergeMe::makePairsDeque(
+std::deque<PmergeMe::Pair>	PmergeMe::_makePairsDeque(
 	const std::deque<int>& input,
 	bool& hasStraggler,
 	int& straggler)
@@ -244,7 +308,7 @@ void	PmergeMe::debugProcess(void) {
 	std::cout << RESET << std::endl;
 
 	startVec = clock();
-	sortVector();
+	_sortVector();
 	endVec = clock();
 
 	std::cout << "After: " << GREEN;
@@ -257,7 +321,7 @@ void	PmergeMe::debugProcess(void) {
 	std::cout << RESET << std::endl;
 
 	startDeq = clock();
-	sortDeque();
+	_sortDeque();
 	endDeq = clock();
 
 	std::cout << "After: " << GREEN;
