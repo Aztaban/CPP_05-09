@@ -66,10 +66,11 @@ private:
 										bool& hasStraggler, int& straggler);
 
 	void	_sortPairsDeque(std::deque<Pair>& pairs);
-	void	_insertPendDeque(std::deque<Pair>& pairs, bool hasStraggler,
+	void	_insertPendDeque(const std::deque<Pair>& pairs, bool hasStraggler,
 							int straggler, std::deque<Node>& mainChain);
 
-
+	std::size_t	_findBigPositionDeque(const std::deque<Node>& chain, std::size_t pairId);
+	std::size_t	_dequeBinarySearchPos(const std::deque<Node>& chain, int value, std::size_t endExclusive);
 	// PRINT
 	template <typename Container>
 	void	printSequence(const Container& sequence) const;

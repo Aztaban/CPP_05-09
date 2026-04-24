@@ -257,8 +257,30 @@ std::size_t	PmergeMe::_vectorBinarySearchPos(const std::vector<Node>& chain,
 }
 
 // FORD-JOHNSON (DEQUE)
-std::deque<int>	PmergeMe::_fordJohnsonDeque(const std::deque<int>& input) {
-	std::deque<int> result(input);
+std::deque<int>	PmergeMe::_fordJohnsonDeque(const std::deque<int>& input)
+{
+	if (input.size() <= 1)
+		return (input);
+
+	bool hasStraggler;
+	int straggler;
+	std::deque<Pair> pairs = _makePairsDeque(input, hasStraggler, straggler);
+	std::deque<Node> mainChain;
+	std::deque<int> result;
+
+	_sortPairsDeque(pairs);
+
+	for (std::size_t i = 0; i < pairs.size(); i++)
+		mainChain.push_back(Node(pairs[i].big, pairs[i].id, true));
+	
+	if (!pairs.empty())
+		mainChain.insert(mainChain.begin(), Node(pairs[0].small, pairs[0].id, false));
+
+	_insertPendDeque(pairs, hasStraggler, straggler, mainChain);
+
+	for (std::size_t i = 0; i < mainChain.size(); i++)
+		result.push_back(mainChain[i].value);
+
 	return (result);
 }
 
@@ -291,6 +313,77 @@ std::deque<PmergeMe::Pair>	PmergeMe::_makePairsDeque(
 		straggler = input[i];
 	}
 	return (pairs);
+}
+
+void	PmergeMe::_sortPairsDeque(std::deque<Pair>& pairs) {
+	if (pairs.size() <= 1)
+		return;
+
+	std::deque<int>	winners;
+	std::deque<Pair>	sortedPairs;
+
+	for (std::size_t i = 0; i < pairs.size(); i++)
+		winners.push_back(pairs[i].big);
+	
+	winners = _fordJohnsonDeque(winners);
+	for (std::size_t i = 0; i < winners.size(); i++) {
+		for (std::size_t j = 0; pairs.size(); j++) {
+			if (pairs[j].big == winners[i]) {
+				sortedPairs.push_back(pairs[j]);
+				break;
+			}
+		}
+	}
+	pairs = sortedPairs;
+}
+
+void	PmergeMe::_insertPendDeque(const std::deque<Pair>& pairs, bool hasStraggler,
+							int straggler, std::deque<Node>& mainChain)
+{
+	std::vector<std::size_t> order = _buildInsertionOrder(pairs.size());
+
+	for (std::size_t i = 0; i < order.size(); i++) {
+		std::size_t pairIndex = order[i];
+		const Pair& pair = pairs[pairIndex];
+
+		std::size_t bigPos = _findBigPositionDeque(mainChain, pair.id);
+		std::size_t insertPos = _dequeBinarySearchPos(mainChain, pair.small, bigPos);
+
+		mainChain.insert(mainChain.begin() + insertPos,
+			Node(pair.small, pair.id, false));
+	}
+
+	if (hasStraggler) {
+		std::size_t insertPos = _dequeBinarySearchPos(mainChain, straggler, mainChain.size());
+		mainChain.insert(mainChain.begin() + insertPos, Node(straggler, static_cast<std::size_t>(-1), false));
+	}
+}
+
+std::size_t	PmergeMe::_findBigPositionDeque(const std::deque<Node>& chain, std::size_t pairId)
+{
+	for (std::size_t i = 0; i < chain.size(); ++i)
+	{
+		if (chain[i].pairId == pairId && chain[i].isBig)
+			return i;
+	}
+	return chain.size();
+}
+
+std::size_t	PmergeMe::_dequeBinarySearchPos(const std::deque<Node>& chain,
+									int value, std::size_t endExclusive)
+{
+	std::size_t left = 0;
+	std::size_t right = endExclusive;
+
+	while (left < right)
+	{
+		std::size_t mid = left + (right - left) / 2;
+		if (chain[mid].value < value)
+			left = mid + 1;
+		else
+			right = mid;
+	}
+	return left;
 }
 
 // PROCESS
