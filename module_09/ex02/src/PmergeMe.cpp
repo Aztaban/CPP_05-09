@@ -15,7 +15,7 @@ PmergeMe::PmergeMe(char **argv) {
 	_parseInput(argv);
 }
 
-PmergeMe::PmergeMe(const PmergeMe& copy) : _vector(copy._vector), _deque(copy._deque) {}
+PmergeMe::PmergeMe(const PmergeMe& copy) : _vector(copy._vector), _deque(copy._deque), _comparisons(0) {}
 
 PmergeMe::~PmergeMe(void) {}
 
@@ -33,6 +33,7 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& copy) {
 	if (this != &copy) {
 		_vector = copy._vector;
 		_deque = copy._deque;
+		_comparisons = copy._comparisons;
 	}
 	return (*this);
 }
@@ -82,6 +83,26 @@ void	PmergeMe::_sortDeque(void) {
 }
 
 // HELPERS
+
+std::size_t	PmergeMe::_fordJohnsonMaxComparisons(std::size_t n)
+{
+	std::size_t total = 0;
+
+	for (std::size_t k = 1; k <= n; k++)
+	{
+		std::size_t value = (3 * k + 3) / 4; // ceil(3k / 4)
+
+		std::size_t power = 1;
+		std::size_t log = 0;
+		while (power < value)
+		{
+			power *= 2;
+			log++;
+		}
+		total += log;
+	}
+	return (total);
+}
 
 std::size_t	PmergeMe::_jacobsthal(std::size_t n)
 {
@@ -170,6 +191,7 @@ std::vector<PmergeMe::Pair>	PmergeMe::_makePairsVector(
 		int	first = input[i];
 		int	second = input[i + 1];
 
+		_comparisons++;
 		if (first < second)
 			pairs.push_back(Pair(first, second, pairId));
 		else
@@ -248,6 +270,8 @@ std::size_t	PmergeMe::_vectorBinarySearchPos(const std::vector<Node>& chain,
 	while (left < right)
 	{
 		std::size_t mid = left + (right - left) / 2;
+
+		_comparisons++;
 		if (chain[mid].value < value)
 			left = mid + 1;
 		else
@@ -300,6 +324,7 @@ std::deque<PmergeMe::Pair>	PmergeMe::_makePairsDeque(
 		int	first = input[i];
 		int	second = input[i + 1];
 
+		_comparisons++;
 		if (first < second)
 			pairs.push_back(Pair(first, second, pairId));
 		else
@@ -378,6 +403,8 @@ std::size_t	PmergeMe::_dequeBinarySearchPos(const std::deque<Node>& chain,
 	while (left < right)
 	{
 		std::size_t mid = left + (right - left) / 2;
+
+		_comparisons++;
 		if (chain[mid].value < value)
 			left = mid + 1;
 		else
@@ -388,21 +415,26 @@ std::size_t	PmergeMe::_dequeBinarySearchPos(const std::deque<Node>& chain,
 
 // PROCESS
 void	PmergeMe::debugProcess(void) {
-	clock_t startVec;
-	clock_t endVec;
-	clock_t startDeq;
-	clock_t endDeq;
-	double  vecTime;
-	double  deqTime;
+	clock_t	startVec;
+	clock_t	endVec;
+	clock_t	startDeq;
+	clock_t	endDeq;
+	double	vecTime;
+	double	deqTime;
+	std::size_t	vecComp;
+	std::size_t deqComp;
 
+	
 	std::cout << YELLOW << "-- VECTOR FORD JOHNSON --" << RESET << std::endl;
 	std::cout << "Before: " << BLUE;
 	printSequence(_vector);
 	std::cout << RESET << std::endl;
 
+	_comparisons = 0;
 	startVec = clock();
 	_sortVector();
 	endVec = clock();
+	vecComp = _comparisons;
 
 	std::cout << "After: " << GREEN;
 	printSequence(_vector);
@@ -413,9 +445,11 @@ void	PmergeMe::debugProcess(void) {
 	printSequence(_deque);
 	std::cout << RESET << std::endl;
 
+	_comparisons = 0;
 	startDeq = clock();
 	_sortDeque();
 	endDeq = clock();
+	deqComp = _comparisons;
 
 	std::cout << "After: " << GREEN;
 	printSequence(_deque);
@@ -428,9 +462,15 @@ void	PmergeMe::debugProcess(void) {
 	std::cout << "Time to process a range of " << YELLOW << _vector.size() << RESET
 			  << " elements with " << YELLOW << "std::vector" << RESET << " : "
 			  << GREEN << vecTime << RESET << " us" << std::endl;
+	std::cout << "Vector comparisons: " << GREEN << vecComp << RESET
+			  << " (MaxComparisons: " << YELLOW << _fordJohnsonMaxComparisons(_vector.size())
+			  << RESET << ")" << std::endl;
 	std::cout << "Time to process a range of " << YELLOW << _deque.size() << RESET
 			  << " elements with " << YELLOW << "std::deque" << RESET << " : "
 			  << GREEN << deqTime << RESET << " us" << std::endl;
+	std::cout << "Deque comparisons: " << GREEN << deqComp << RESET
+			  << " (MaxComparisons: " << YELLOW << _fordJohnsonMaxComparisons(_deque.size())
+			  << RESET << ")" << std::endl;
 }
 
 // void	PmergeMe::process(void) {

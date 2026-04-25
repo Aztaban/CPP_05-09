@@ -13,8 +13,7 @@ class PmergeMe {
 private:
 	std::vector<int>	_vector;
 	std::deque<int>		_deque;
-
-	PmergeMe(void);
+	std::size_t			_comparisons;
 
 	struct Pair {
 		int			small;
@@ -34,6 +33,8 @@ private:
 		Node(int value, std::size_t pairId, bool isBig);
 	};
 
+	PmergeMe(void);
+
 	// PARSING
 	int		_parsePositiveInteger(const std::string& token) const;
 	bool	_isDuplicate(int value) const;
@@ -44,6 +45,7 @@ private:
 	void	_sortDeque(void);
 
 	// HELPERS
+	static std::size_t	_fordJohnsonMaxComparisons(std::size_t n);
 	static std::size_t	_jacobsthal(std::size_t n);
 	static std::vector<std::size_t>	_buildInsertionOrder(std::size_t size);
 

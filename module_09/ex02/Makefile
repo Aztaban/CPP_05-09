@@ -56,8 +56,10 @@ fclean: clean
 
 re: fclean all
 
-run: $(NAME)
-	@./$(NAME)
+N ?= 3000
+
+run: all
+	./PmergeMe $(shell shuf -i 1-$(N) -n $(N) | tr '\n' ' ')
 
 .PHONY: all clean fclean re run
 
